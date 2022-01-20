@@ -1,0 +1,26 @@
+/*color pallet
+    #222222 Eerie Black
+    #FFFFFF White
+    #1C5D99 Lapis Lazuli
+    #639FAB Cadet Blue
+    #BBCDe5 Light Steel Blue
+*/
+
+body {
+  margin: 0px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 2vw;
+}
+
+.nav {
+  background-color: #1c5d99;
+  display: flex;
+  justify-content: end;
+
+  padding: 20px;
+}
+
+.nav > img {
+  width: 50px;
+  fill: white;
+}
