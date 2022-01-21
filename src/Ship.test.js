@@ -21,3 +21,33 @@ test("test that a ship of size 2 is not sunk after 2 identical hits", () => {
   shipObj.hit(0);
   expect(shipObj.isSunk()).toBe(false);
 });
+
+test("coordToSlotNumber horizontal", () => {
+  const shipObj = new Ship(5, 0, 0, false);
+  expect(shipObj.coordToSlotNumber(4, 0)).toBe(4);
+});
+
+test("coordToSlotNumber horizontal", () => {
+  const shipObj = new Ship(5, 0, 0, false);
+  expect(shipObj.coordToSlotNumber(5, 0)).toBe(null);
+});
+
+test("coordToSlotNumber verticle", () => {
+  const shipObj = new Ship(5, 0, 0, true);
+  expect(shipObj.coordToSlotNumber(0, 4)).toBe(4);
+});
+
+test("coordToSlotNumber horizontal", () => {
+  const shipObj = new Ship(2, 1, 1, false);
+  expect(shipObj.coordToSlotNumber(0, 0)).toBe(null);
+});
+
+test("coordToSlotNumber horizontal", () => {
+  const shipObj = new Ship(2, 1, 1, false);
+  expect(shipObj.coordToSlotNumber(1, 0)).toBe(null);
+});
+
+test("coordToSlotNumber horizontal", () => {
+  const shipObj = new Ship(2, 1, 1, false);
+  expect(shipObj.coordToSlotNumber(2, 0)).toBe(null);
+});
