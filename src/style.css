@@ -1,26 +1,37 @@
 /*color pallet
-    #222222 Eerie Black
-    #FFFFFF White
-    #1C5D99 Lapis Lazuli
-    #639FAB Cadet Blue
-    #BBCDe5 Light Steel Blue
+    #35393C Onyx
+    #42858C steal Teal
+    #5DA399 Polished Pine
+    #63CCCA Medium Turquoise
+    #397367 Hookers Green
 */
 
 body {
   margin: 0px;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 2vw;
+  font-size: 4vw;
+  background-color: #35393c;
+  color: #63ccca;
 }
 
-.nav {
-  background-color: #1c5d99;
+.container {
   display: flex;
-  justify-content: end;
-
-  padding: 20px;
+  flex-direction: column;
+  align-items: center;
 }
 
-.nav > img {
-  width: 50px;
-  fill: white;
+.unknown {
+  background-color: #35393c;
+}
+
+.hit {
+  background-color: #fa5b33;
+}
+
+.miss {
+  background-color: #5da399;
+}
+
+.ship {
+  background-color: #42858c;
 }

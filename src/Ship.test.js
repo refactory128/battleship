@@ -51,3 +51,13 @@ test("coordToSlotNumber horizontal", () => {
   const shipObj = new Ship(2, 1, 1, false);
   expect(shipObj.coordToSlotNumber(2, 0)).toBe(null);
 });
+
+test("coordToSlotNumber horizontal 0", () => {
+  const shipObj = new Ship(2, 0, 0, false);
+  expect(shipObj.coordToSlotNumber(0, 0)).toBe(0);
+});
+
+test("coordToSlotNumber horizontal 0 again", () => {
+  const shipObj = new Ship(2, 0, 0, false);
+  expect(shipObj.coordToSlotNumber(0, 0)).toBe(0);
+});
