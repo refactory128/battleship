@@ -5,6 +5,7 @@ import style from "./style.css";
 import Player from "./Player";
 
 async function newBattle() {
+  const gameSpeed = 500;
   //clear grids
   clearGrids();
   //create player1
@@ -27,47 +28,65 @@ async function newBattle() {
   let gameOver = false;
   let x, y;
   let message = "";
+  display("PREPARE FOR BATTLE!");
   while (!gameOver) {
+    //Player 1 Turn
+    //Reset GameBoard
     clearGrids();
     renderYourFleet(player1.gameboard);
     renderEnemyWaters(player2.gameboard);
 
-    //display("Your Turn -- ATTACK");
-    [x, y] = await getLocationClicked(".EnemyGrid");
-    console.log("awaited [" + x + "," + y + "]");
-    message = player1.takeTurn(player2.gameboard, x, y);
-    //console.log("awaited [" + x + "," + y + "]");
-    //message = player1.takeTurn(player2.gameboard, 2, 5);
-    display(message);
-    console.log(message);
+    //Pause to alow info messages to display
+    await sleep(gameSpeed);
+    display("Your Turn -- ATTACK!");
 
+    //Get Next Attack Location
+    [x, y] = await getLocationClicked(".EnemyGrid");
+
+    //Process Attack
+    message = player1.takeTurn(player2.gameboard, x, y);
+
+    //display Result of Attack
+    display("YOUR ATTACK: " + message);
+
+    //Check for winner
     if (player2.gameboard.allSunk()) {
       gameOver = true;
       break;
     }
 
-    // set turn indicator
+    //Player 2 Turn
+    //Reset GameBoard
+    clearGrids();
+    renderYourFleet(player1.gameboard);
+    renderEnemyWaters(player2.gameboard);
 
-    // How do I wait for a user to push the fire button? <<-------------
+    //Pause to alow info messages to display
+    await sleep(gameSpeed);
+    display("RED ALERT -- INCOMING ENEMY FIRE");
+    await sleep(gameSpeed);
+    //Get Next Attack Location
+    //[x, y] = await getLocationClicked(".EnemyGrid");
+    x = null;
+    y = null;
 
-    //player1 turn
-    //return info message
-    // pause
-    //check for winner
-    //return info message
-    //move to new battle screen
-    // pause
+    //Process Attack
+    message = player2.takeTurn(player1.gameboard, x, y);
 
-    // set turn indicator
-    //player 2 turn
-    //return info message
-    // pause
-    //check for winner
-    //return info message
-    //move to new battle screen
-    // paus
+    //display Result of Attack
+    display("ENEMY ATTACK: " + message);
+
+    //Check for winner
+    if (player1.gameboard.allSunk()) {
+      gameOver = true;
+      break;
+    }
   }
   console.log("game over");
+  display("Game Over");
+  clearGrids();
+  renderYourFleet(player1.gameboard);
+  renderEnemyWaters(player2.gameboard);
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -146,7 +165,7 @@ function renderGrid(gameboard, isOpponent) {
 
       if (
         //!isOpponent &&
-        //gameboard.shots[x][y] !== 2 &&
+        gameboard.shots[x][y] !== 2 &&
         gameboard.isShip(x, y)
       ) {
         cell.classList.remove("unknown");
