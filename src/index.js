@@ -6,6 +6,10 @@ import Player from "./Player";
 
 async function newBattle() {
   const gameSpeed = 500;
+  let gameOver = false;
+  let x, y;
+  let message = "";
+
   //clear grids
   clearGrids();
   //create player1
@@ -14,20 +18,22 @@ async function newBattle() {
   const player2 = new Player();
   //generate new grids
 
-  //display("PLACE YOUR FLEET -- select location for Destroyer (5)");
-  //renderYourFleet(player1.gameboard);
+  //player1.gameboard.setBoardRandom();
+  player2.gameboard.setBoardRandom();
+  player1.registerOpponentGameboard(player2.gameboard);
+  player2.registerOpponentGameboard(player1.gameboard);
 
   // Place your Fleet
+  display("PLACE YOUR FLEET -- select location for Destroyer (5)");
+  renderYourFleet(player1.gameboard);
+  [x, y] = await getLocationClicked(".YourGrid");
+  player1.gameboard.placeShip(5, x, y, false);
 
-  player1.gameboard.setBoardRandom();
-  player2.gameboard.setBoardRandom();
   //player2.gameboard.placeShip(2, 0, 0, false);
   //player2.gameboard.placeShip(2, 1, 5, false);
 
   //enter game loop
-  let gameOver = false;
-  let x, y;
-  let message = "";
+
   display("PREPARE FOR BATTLE!");
   while (!gameOver) {
     //Player 1 Turn
@@ -44,7 +50,7 @@ async function newBattle() {
     [x, y] = await getLocationClicked(".EnemyGrid");
 
     //Process Attack
-    message = player1.takeTurn(player2.gameboard, x, y);
+    message = player1.takeTurn(x, y);
 
     //display Result of Attack
     display("YOUR ATTACK: " + message);
@@ -52,6 +58,7 @@ async function newBattle() {
     //Check for winner
     if (player2.gameboard.allSunk()) {
       gameOver = true;
+      display("YOU WIN! -- GAME OVER");
       break;
     }
 
@@ -67,11 +74,13 @@ async function newBattle() {
     await sleep(gameSpeed);
     //Get Next Attack Location
     //[x, y] = await getLocationClicked(".EnemyGrid");
+
     x = null;
     y = null;
-
+    [x, y] = player2.getAiPlay();
+    console.log("AI play [" + x + "," + y + "]");
     //Process Attack
-    message = player2.takeTurn(player1.gameboard, x, y);
+    message = player2.takeTurn(x, y);
 
     //display Result of Attack
     display("ENEMY ATTACK: " + message);
@@ -79,11 +88,12 @@ async function newBattle() {
     //Check for winner
     if (player1.gameboard.allSunk()) {
       gameOver = true;
+      display("GAME OVER -- OPPONENT WINS");
       break;
     }
   }
   console.log("game over");
-  display("Game Over");
+
   clearGrids();
   renderYourFleet(player1.gameboard);
   renderEnemyWaters(player2.gameboard);
