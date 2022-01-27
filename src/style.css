@@ -11,6 +11,53 @@ body {
   font-size: 4vw;
   background-color: #35393c;
   color: #000000;
+  overflow: hidden; /*hide scroll bars*/
+  transition: 0.5s;
+}
+
+table {
+  border: 2px solid #006172;
+  width: 90vw;
+}
+
+.cell {
+  border: 2px solid #006172;
+}
+
+button {
+  background-color: #c8e7f7;
+  color: #013240;
+  border: 2px solid #013240;
+
+  border-radius: 20px;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-weight: 100;
+  padding: 20px;
+  margin-top: 200px;
+  font-size: 4vw;
+  opacity: 50%;
+  text-shadow: black;
+}
+
+button:hover {
+  box-shadow: 5px 10px 30px #013240;
+
+  transition: 0.2s;
+}
+
+button:active {
+  border: 2px solid #c8e7f7;
+  background-color: #013240;
+  color: #c8e7f7;
+}
+
+#NewBattleModal {
+  background-image: url("./img/ShipsOfBattleTitle.png");
+}
+
+#InfoModal {
+  background-image: url("./img/overlayTall.png");
+  display: none;
 }
 
 .modal {
@@ -20,10 +67,9 @@ body {
   width: 100%;
   height: 100%;
 
-  overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0, 0, 0); /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-  background-image: url("./img/ShipsOfBattleTitle.png");
+
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -39,6 +85,7 @@ body {
   height: 100vh;
   width: 100%;
   background-image: url("./img/ocean_desktop.jpeg");
+
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -50,13 +97,19 @@ body {
 .YourFleetScreen {
   height: 100vh;
   width: 100%;
-  background-image: url("./img/ocean_desktop.jpeg");
+  background: linear-gradient(0deg, rgba(1, 50, 64, 0.9), rgba(1, 50, 64, 0.9)),
+    url("./img/ocean_desktop.jpeg");
+
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.yourGrid {
+  opacity: 100%;
 }
 
 .EnemyWatersScreen {

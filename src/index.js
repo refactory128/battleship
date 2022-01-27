@@ -5,7 +5,7 @@ import style from "./style.css";
 import Player from "./Player";
 
 async function newBattle() {
-  const gameSpeed = 500;
+  const gameSpeed = 1000;
   let gameOver = false;
   let x, y;
   let message = "";
@@ -25,6 +25,8 @@ async function newBattle() {
 
   // Place your Fleet
   display("PLACE YOUR FLEET -- select location for Destroyer (5)");
+
+  ShowScreen("Your Fleet");
   renderYourFleet(player1.gameboard);
   [x, y] = await getLocationClicked(".YourGrid");
   player1.gameboard.placeShip(5, x, y, false);
@@ -45,7 +47,7 @@ async function newBattle() {
     //Pause to alow info messages to display
     await sleep(gameSpeed);
     display("Your Turn -- ATTACK!");
-
+    ShowScreen("Enemy Waters");
     //Get Next Attack Location
     [x, y] = await getLocationClicked(".EnemyGrid");
 
@@ -70,6 +72,7 @@ async function newBattle() {
 
     //Pause to alow info messages to display
     await sleep(gameSpeed);
+    ShowScreen("Your Fleet");
     display("RED ALERT -- INCOMING ENEMY FIRE");
     await sleep(gameSpeed);
     //Get Next Attack Location
@@ -97,6 +100,7 @@ async function newBattle() {
   clearGrids();
   renderYourFleet(player1.gameboard);
   renderEnemyWaters(player2.gameboard);
+  ShowScreen("New Battle");
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -105,6 +109,27 @@ const newBattleButton = document.querySelector(".NewBattleButton");
 newBattleButton.addEventListener("click", function () {
   newBattle();
 });
+ShowScreen("New Battle");
+
+//////////////
+// Move to Screen
+function ShowScreen(screen) {
+  const NewBattleModal = document.querySelector("#NewBattleModal");
+  NewBattleModal.style.display = "none";
+  const InfoModal = document.querySelector("#InfoModal");
+  InfoModal.style.display = "none";
+
+  if (screen === "New Battle") {
+    NewBattleModal.style.display = "flex";
+    document.querySelector(".NewBattleScreen").scrollIntoView();
+  } else if (screen === "Your Fleet") {
+    document.querySelector(".YourFleetScreen").scrollIntoView();
+  } else if (screen === "Enemy Waters") {
+    document.querySelector(".EnemyWatersScreen").scrollIntoView();
+  } else if (screen === "Info") {
+    InfoModal.style.display = "flex";
+  }
+}
 
 //////////////
 // clear Grids
@@ -157,6 +182,7 @@ function renderGrid(gameboard, isOpponent) {
     currentRow.innerHTML = String.fromCharCode(65 + y);
     for (let x = 0; x < gameboard.size; x++) {
       let cell = currentRow.insertCell(x);
+      cell.classList.add("cell");
       cell.innerHTML = gameboard.shots[x][y];
 
       if (gameboard.shots[x][y] === 0) {
