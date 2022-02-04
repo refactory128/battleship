@@ -25,11 +25,39 @@ async function newBattle() {
 
   // Place your Fleet
   display("PLACE YOUR FLEET -- select location for Destroyer (5)");
+  ShowScreen("Your Fleet");
+  renderYourFleet(player1.gameboard);
+  CreateRotateButton(true);
+  [x, y] = await getLocationClicked(".YourGrid");
+  player1.gameboard.placeShip(5, x, y, false);
 
+  clearGrids();
+  display("PLACE YOUR FLEET -- select location for Battleship (4)");
   ShowScreen("Your Fleet");
   renderYourFleet(player1.gameboard);
   [x, y] = await getLocationClicked(".YourGrid");
-  player1.gameboard.placeShip(5, x, y, false);
+  player1.gameboard.placeShip(4, x, y, false);
+
+  clearGrids();
+  display("PLACE YOUR FLEET -- select location for Destroyer (3)");
+  ShowScreen("Your Fleet");
+  renderYourFleet(player1.gameboard);
+  [x, y] = await getLocationClicked(".YourGrid");
+  player1.gameboard.placeShip(3, x, y, false);
+
+  clearGrids();
+  display("PLACE YOUR FLEET -- select location for Submarine (3)");
+  ShowScreen("Your Fleet");
+  renderYourFleet(player1.gameboard);
+  [x, y] = await getLocationClicked(".YourGrid");
+  player1.gameboard.placeShip(3, x, y, false);
+
+  clearGrids();
+  display("PLACE YOUR FLEET -- select location for Patrol Boat (2)");
+  ShowScreen("Your Fleet");
+  renderYourFleet(player1.gameboard);
+  [x, y] = await getLocationClicked(".YourGrid");
+  player1.gameboard.placeShip(2, x, y, false);
 
   //player2.gameboard.placeShip(2, 0, 0, false);
   //player2.gameboard.placeShip(2, 1, 5, false);
@@ -100,7 +128,7 @@ async function newBattle() {
   clearGrids();
   renderYourFleet(player1.gameboard);
   renderEnemyWaters(player2.gameboard);
-  ShowScreen("New Battle");
+  ShowScreen("Info");
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -109,6 +137,12 @@ const newBattleButton = document.querySelector(".NewBattleButton");
 newBattleButton.addEventListener("click", function () {
   newBattle();
 });
+
+const ContinueButton = document.querySelector(".ContinueButton");
+ContinueButton.addEventListener("click", function () {
+  ShowScreen("New Battle");
+});
+
 ShowScreen("New Battle");
 
 //////////////
@@ -145,6 +179,27 @@ function clearGrids() {
   }
 }
 
+/////////////////
+//
+function CreateRotateButton(isVertical) {
+  const rotateButton = document.createElement("button");
+  rotateButton.innerHTML = isVertical ? "PLACE VERTICAL" : "PLACE HORIZONTAL";
+  rotateButton.classList.add("rotateButton");
+  rotateButton.dataset.isVertical = isVertical;
+
+  // Next Add Event listener for Rotatate button <<-------------
+
+  const YourGrid = document.querySelector(".YourGrid");
+  YourGrid.appendChild(rotateButton);
+}
+
+//////////
+// getPlacementDirection();
+
+function getPlacementDirection() {
+  return document.querySelector(".rotateButton").dataset.isVertical;
+}
+
 ///////////////////////
 // render Your Fleet
 
@@ -165,25 +220,19 @@ function renderEnemyWaters(gameboard) {
 // render grid
 
 function renderGrid(gameboard, isOpponent) {
-  const grid = document.createElement("table");
-  const gridHead = grid.createTHead();
-  const gridHeadRow = gridHead.insertRow(0);
-  for (let i = -1; i < gameboard.size; i++) {
-    const gridHeadCell = gridHeadRow.insertCell();
-
-    if (i >= 0) {
-      gridHeadCell.innerHTML = i;
-    }
-  }
-  const gridBody = grid.createTBody();
+  const grid = document.createElement("div");
+  grid.classList.add("grid");
 
   for (let y = gameboard.size - 1; y >= 0; y--) {
-    const currentRow = gridBody.insertRow();
-    currentRow.innerHTML = String.fromCharCode(65 + y);
+    const currentRow = document.createElement("div");
+    currentRow.classList.add("row");
+
+    grid.appendChild(currentRow);
+
     for (let x = 0; x < gameboard.size; x++) {
-      let cell = currentRow.insertCell(x);
+      const cell = document.createElement("div");
       cell.classList.add("cell");
-      cell.innerHTML = gameboard.shots[x][y];
+      currentRow.appendChild(cell);
 
       if (gameboard.shots[x][y] === 0) {
         cell.classList.add("unknown");
@@ -221,7 +270,7 @@ function renderGrid(gameboard, isOpponent) {
 function getLocationClicked(gridClass) {
   return new Promise((resolve) => {
     const grid = document.querySelector(gridClass);
-    const cells = grid.querySelectorAll("td");
+    const cells = grid.querySelectorAll(".cell");
     for (let cell of cells) {
       cell.addEventListener("click", (el) => {
         console.log(cell.dataset.x);

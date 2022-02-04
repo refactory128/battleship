@@ -7,21 +7,48 @@
 
 body {
   margin: 0px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 4vw;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-size: 3vw;
   background-color: #35393c;
-  color: #000000;
+  color: #001a21;
   overflow: hidden; /*hide scroll bars*/
   transition: 0.5s;
 }
 
-table {
-  border: 2px solid #006172;
-  width: 90vw;
+h1 {
+  color: #013240;
+  text-shadow: -1px -1px 3px #c8e7f7;
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  height: 700px;
+  width: 700px;
+  box-shadow: 5px 15px 25px #001a21;
+}
+
+@media only screen and (max-width: 700px) {
+  .grid {
+    height: 350px;
+    width: 350px;
+  }
+}
+
+.row {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: stretch;
+  border: 2px solid #c8e7f7;
 }
 
 .cell {
-  border: 2px solid #006172;
+  border: 2px solid #c8e7f7;
+  margin: -2px;
+  padding: 0px;
+  flex: 1 0 auto;
+  height: auto;
+  align-items: stretch;
 }
 
 button {
@@ -33,7 +60,6 @@ button {
   font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   font-weight: 100;
   padding: 20px;
-  margin-top: 200px;
   font-size: 4vw;
   opacity: 50%;
   text-shadow: black;
@@ -52,7 +78,7 @@ button:active {
 }
 
 #NewBattleModal {
-  background-image: url("./img/ShipsOfBattleTitle.png");
+  background-image: url("./img/ShipsOfBattleTitleTop.png");
 }
 
 #InfoModal {
@@ -61,7 +87,7 @@ button:active {
 }
 
 .modal {
-  font-size: 5vw;
+  font-size: 2vw;
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
   width: 100%;
@@ -72,13 +98,14 @@ button:active {
 
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: 50% 50%;
   opacity: 0.9;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   flex-shrink: 1;
+  text-align: center;
 }
 
 .NewBattleScreen {
@@ -97,7 +124,7 @@ button:active {
 .YourFleetScreen {
   height: 100vh;
   width: 100%;
-  background: linear-gradient(0deg, rgba(1, 50, 64, 0.9), rgba(1, 50, 64, 0.9)),
+  background: linear-gradient(0deg, rgba(1, 50, 64, 0.8), rgba(1, 50, 64, 0.8)),
     url("./img/ocean_desktop.jpeg");
 
   background-size: cover;
@@ -106,6 +133,7 @@ button:active {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .yourGrid {
@@ -115,7 +143,8 @@ button:active {
 .EnemyWatersScreen {
   height: 100vh;
   width: 100%;
-  background-image: url("./img/ocean_desktop.jpeg");
+  background: linear-gradient(0deg, rgba(1, 50, 64, 0.9), rgba(1, 50, 64, 0.9)),
+    url("./img/ocean_desktop.jpeg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -131,17 +160,17 @@ button:active {
 }
 
 .unknown {
-  background-color: #35393c;
+  background-color: #006172;
 }
 
 .hit {
-  background-color: #fa5b33;
+  background-color: #ee1414;
 }
 
 .miss {
-  background-color: #5da399;
+  background-color: #e0e6e5;
 }
 
 .ship {
-  background-color: #42858c;
+  background-color: #35393c;
 }
