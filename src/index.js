@@ -23,13 +23,20 @@ async function newBattle() {
   player1.registerOpponentGameboard(player2.gameboard);
   player2.registerOpponentGameboard(player1.gameboard);
 
+  await placeFleet(player1, 5);
+  await placeFleet(player1, 4);
+  await placeFleet(player1, 3);
+  await placeFleet(player1, 3);
+  await placeFleet(player1, 2);
   // Place your Fleet
+  /*
+  player1.gameboard.placeShip(2, 0, 0, true);
   display("PLACE YOUR FLEET -- select location for Destroyer (5)");
   ShowScreen("Your Fleet");
   renderYourFleet(player1.gameboard);
   CreateRotateButton(true);
   [x, y] = await getLocationClicked(".YourGrid");
-  player1.gameboard.placeShip(5, x, y, false);
+  player1.gameboard.placeShip(5, x, y, true);
 
   clearGrids();
   display("PLACE YOUR FLEET -- select location for Battleship (4)");
@@ -58,7 +65,7 @@ async function newBattle() {
   renderYourFleet(player1.gameboard);
   [x, y] = await getLocationClicked(".YourGrid");
   player1.gameboard.placeShip(2, x, y, false);
-
+*/
   //player2.gameboard.placeShip(2, 0, 0, false);
   //player2.gameboard.placeShip(2, 1, 5, false);
 
@@ -131,6 +138,37 @@ async function newBattle() {
   ShowScreen("Info");
 }
 
+//////////
+// Place Fleet
+
+async function placeFleet(player, shipSize) {
+  // Place your Fleet
+
+  let x, y;
+  let i = 0;
+  let validPlacement;
+  let isVertical;
+
+  do {
+    clearGrids();
+    validPlacement = false;
+    isVertical = true;
+    if (i > 0) {
+      display("INVALID PLACEMENT -- select location for ship size " + shipSize);
+    } else {
+      display("PLACE YOUR FLEET -- select location for ship size " + shipSize);
+    }
+    ShowScreen("Your Fleet");
+    renderYourFleet(player.gameboard);
+    CreateRotateButton(true);
+    [x, y] = await getLocationClicked(".YourGrid");
+    isVertical = getPlacementDirection();
+    //console.log(isVertical);
+    validPlacement = player.gameboard.placeShip(shipSize, x, y, isVertical);
+    i++;
+  } while (!validPlacement && i < 500);
+}
+
 ////////////////////////////////////////////////////////////////////
 // Dom Elements
 const newBattleButton = document.querySelector(".NewBattleButton");
@@ -188,6 +226,15 @@ function CreateRotateButton(isVertical) {
   rotateButton.dataset.isVertical = isVertical;
 
   // Next Add Event listener for Rotatate button <<-------------
+  rotateButton.addEventListener("click", (el) => {
+    if (rotateButton.dataset.isVertical === "true") {
+      rotateButton.dataset.isVertical = "false";
+      rotateButton.innerHTML = "PLACE HORIZONTAL";
+    } else {
+      rotateButton.dataset.isVertical = "true";
+      rotateButton.innerHTML = "PLACE VERTICAL";
+    }
+  });
 
   const YourGrid = document.querySelector(".YourGrid");
   YourGrid.appendChild(rotateButton);
@@ -197,7 +244,10 @@ function CreateRotateButton(isVertical) {
 // getPlacementDirection();
 
 function getPlacementDirection() {
-  return document.querySelector(".rotateButton").dataset.isVertical;
+  const isVertical =
+    document.querySelector(".rotateButton").dataset.isVertical === "true";
+  console.log("placement is Vertical =" + isVertical);
+  return isVertical;
 }
 
 ///////////////////////
@@ -248,8 +298,9 @@ function renderGrid(gameboard, isOpponent) {
         cell.classList.add("hit");
       }
 
+      // to show opponents ships remove !isOpponent
       if (
-        //!isOpponent &&
+        !isOpponent &&
         gameboard.shots[x][y] !== 2 &&
         gameboard.isShip(x, y)
       ) {

@@ -12,6 +12,22 @@ test("test place ship and isShip function", () => {
   expect(grid.isShip(7, 0)).toBe(true);
 });
 
+test("test place ship vertical", () => {
+  const size = 10;
+  const grid = new Gameboard(size);
+  grid.placeShip(5, 1, 1, true);
+
+  expect(grid.isShip(1, 2)).toBe(true);
+});
+
+test("test place ship vertical at top of board", () => {
+  const size = 10;
+  const grid = new Gameboard(size);
+  grid.placeShip(2, 9, 8, true);
+
+  expect(grid.isShip(9, 9)).toBe(true);
+});
+
 test("test hit ship function", () => {
   const size = 2;
   const grid = new Gameboard(size);

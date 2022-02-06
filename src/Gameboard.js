@@ -52,8 +52,8 @@ Gameboard.prototype.validPlacement = function (length, x, y, isVertical) {
     x < this.size &&
     y >= 0 &&
     y < this.size &&
-    ((isVertical && length + y < this.size) ||
-      (!isVertical && length + x < this.size))
+    ((isVertical && length + y <= this.size) ||
+      (!isVertical && length + x <= this.size))
   ) {
     return true;
   }
@@ -73,17 +73,12 @@ Gameboard.prototype.collision = function (length, x, y, isVertical) {
 };
 
 Gameboard.prototype.receiveAttack = function (x, y) {
-  console.log("recieveAttack [" + x + "," + y + "]");
-  console.log(this.ships);
-  console.log(this.isShip(x, y));
-
   if (this.isShip(x, y)) {
     this.shots[x][y] = 2; // hit
     this.hitShip(x, y);
     return "Hit";
   } else {
     this.shots[x][y] = 1; // miss
-    console.log("miss");
     return "Miss";
   }
 };
@@ -115,7 +110,6 @@ Gameboard.prototype.hitShip = function (x, y) {
     const slot = boat.coordToSlotNumber(x, y);
     if (slot !== null) {
       boat.hit(slot);
-      console.log("hit slot = " + slot);
       return true;
     }
   }
